@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chord Player - One Row</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 40px; }
+    table { border-collapse: collapse; margin: auto; }
+    td { border: 2px solid black; width: 180px; height: 100px; vertical-align: middle; }
+    .beat {
+      display: inline-block;   /* ✅ makes them sit side by side */
+      width: 30px;
+      height: 20px;
+      margin: 5px auto;
+      border: 1px solid #444;
+      border-radius: 4px;
+      line-height: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .active {
+      background-color: lightgreen;
+      animation: blink 0.3s alternate;
+    }
+    @keyframes blink {
+      from { background-color: lightgreen; }
+      to { background-color: white; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Chord Player</h1>
+
+  <label>Tempo (BPM):</label>
+  <select id="tempo">
+    <option value="60">60</option>
+    <option value="80">80</option>
+    <option value="100" selected>100</option>
+    <option value="120">120</option>
+    <option value="140">140</option>
+  </select>
+
+  <label>Time Signature:</label>
+  <select id="timeSignature">
+    <option value="2">2/4</option>
+    <option value="3">3/4</option>
+    <option value="4" selected>4/4</option>
+  </select>
+
+  <button id="playBtn">▶ Play</button>
+  <button id="stopBtn">⏹ Stop</button>
+
+  <table>
+    <tr id="row"></tr>
+  </table>
+
+  <script>
+    const chordLevel = document.getElementById("chords");
+    
+    // const chords = ["C", "C", "G", "G"]; // Example chords
+    const chords = ["C", "D", "G", "D"]; // Example chords
+    const row = document.getElementById("row");
+    const playBtn = document.getElementById("playBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const tempoSelect = document.getElementById("tempo");
+    const timeSignatureSelect = document.getElementById("timeSignature");
+
+    let interval, currentBeat = 0;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function renderBars() {
+      row.innerHTML = "";
+      const beatsPerBar = parseInt(timeSignatureSelect.value);
+      chords.forEach((chord, barIndex) => {
+        const td = document.createElement("td");
+        for (let i = 0; i < beatsPerBar; i++) {
+          const beatDiv = document.createElement("div");
+          beatDiv.className = "beat";
+          beatDiv.textContent = chord;
+          beatDiv.id = `bar${barIndex}-beat${i}`;
+          td.appendChild(beatDiv);
+        }
+        row.appendChild(td);
+      });
+    }
+
+    function playClick(isStrong) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = isStrong ? 880 : 440;
+      gain.gain.value = 0.2;
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    function startPlayback() {
+      stopPlayback();
+      const bpm = parseInt(tempoSelect.value);
+      const beatDuration = (60 / bpm) * 1000;
+      const beatsPerBar = parseInt(timeSignatureSelect.value);
+      const totalBeats = chords.length * beatsPerBar;
+      currentBeat = 0;
+
+      interval = setInterval(() => {
+        document.querySelectorAll(".beat").forEach(el => el.classList.remove("active"));
+        const barIndex = Math.floor(currentBeat / beatsPerBar);
+        const beatIndex = currentBeat % beatsPerBar;
+        const activeDiv = document.getElementById(`bar${barIndex}-beat${beatIndex}`);
+        if (activeDiv) activeDiv.classList.add("active");
+
+        playClick(beatIndex === 0); // strong click on first beat
+
+        currentBeat = (currentBeat + 1) % totalBeats;
+      }, beatDuration);
+    }
+
+    function stopPlayback() {
+      clearInterval(interval);
+      document.querySelectorAll(".beat").forEach(el => el.classList.remove("active"));
+    }
+
+    timeSignatureSelect.addEventListener("change", renderBars);
+    playBtn.addEventListener("click", () => {
+      audioCtx.resume();
+      startPlayback();
+    });
+    stopBtn.addEventListener("click", stopPlayback);
+
+    renderBars();
+  </script>
+</body>
+</html>

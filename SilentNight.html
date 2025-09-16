@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Silent Night Chords</title>
+  <style>
+    body { 
+        font-family: Arial, sans-serif;
+        background-image: url("./images/silentnight.png");
+        text-align: center;
+        margin-top: 40px; }
+    table { 
+        border-collapse: collapse; 
+        background-color: white;
+        margin: auto; }
+    td, th { 
+      border: 2px solid black; 
+      width: 150px; 
+      text-align: left;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    h1, label {
+        color: white;
+    }
+    p { margin: 5px; }
+    .chord { color: red; font-size: 18px; }
+    .notes { color: rgb(104, 104, 238); font-size: 18px; }
+    .notes::first-letter {
+        color: rgb(64, 5, 109);
+        font-size: 18;  /* Optional: make it bigger */
+        font-weight: bold;
+        font-style: italic;
+    }
+    .lyrics { color: green; font-size: 14px; }
+    .active {
+      background-color: rgb(162, 194, 225);
+    }
+    .active2 {
+      background-color: rgb(125, 150, 176);;
+    }
+    .active3 {
+      background-color: rgb(162, 194, 225);
+    }
+    @keyframes blink {
+      from { background-color: lightgreen; }
+      to { background-color: white; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Silent Night - Chord Player</h1>
+
+  <label>Tempo (BPM):</label>
+  <select id="tempo">
+    <option value="60">60</option>
+    <option value="80">80</option>
+    <option value="90" selected>90</option>
+    <option value="100">100</option>
+    <option value="120">120</option>
+    <option value="140">140</option>
+  </select>
+
+  <button id="playBtn">▶ Play</button>
+  <button id="stopBtn">⏹ Stop</button>
+
+  <table>
+      <tr>
+        <td id="cell0">1 2 3</td>
+        <td id="cell1">1 2 3</td>
+        <td id="cell2">1 2 3</td>
+        <td id="cell3">1 2 3</td>
+      </tr>
+    <tr>
+        <td id="cell4">
+            <p class="chord">G</p>
+            <p class="notes">D  -E  D</p>
+            <p class="lyrics">Si - lent</p>
+        </td>
+        <td id="cell5">
+            <p class="chord">G</p>
+            <p class="notes">B  -  -</p>
+            <p class="lyrics">N - ight</p>
+        </td>
+        <td id="cell6">
+            <p class="chord">G</p>
+            <p class="notes">D  -E  D</p>
+            <p class="lyrics">Ho - ly</p>
+        </td>
+        <td id="cell7">
+            <p class="chord">G</p>
+            <p class="notes">B  -  -</p>
+            <p class="lyrics">N - ight</p>
+        </td>
+    </tr>
+    <tr>
+        <td id="cell8">
+            <p class="chord">D</p>
+            <p class="notes">A  - A</p>
+            <p class="lyrics">All is</p>
+        </td>
+        <td id="cell9">
+            <p class="chord">D7</p>
+            <p class="notes">F#  -  -</p>
+            <p class="lyrics">calm</p>
+        </td>
+        <td id="cell10">
+            <p class="chord">G</p>
+            <p class="notes">G  -  G</p>
+            <p class="lyrics">All - is</p>
+        </td>
+        <td id="cell11">
+            <p class="chord">G</p>
+            <p class="notes">D  -  -</p>
+            <p class="lyrics">Bright</p>
+        </td>
+    </tr>
+    <tr>
+        <td id="cell12">
+            <p class="chord">C</p>
+            <p class="notes">E  -  E</p>
+            <p class="lyrics">Round yon</p>
+        </td>
+        <td id="cell13">
+            <p class="chord">C</p>
+            <p class="notes">G  -F#  E</p>
+            <p class="lyrics">Vir - gin</p>
+        </td>
+        <td id="cell14">
+            <p class="chord">G</p>
+            <p class="notes">D  -E  D</p>
+            <p class="lyrics">Mo - ther and</p>
+        </td>
+        <td id="cell15">
+            <p class="chord">G</p>
+            <p class="notes">B  -  -</p>
+            <p class="lyrics">Child</p>
+        </td>
+    </tr>
+    <tr>
+        <td id="cell16">
+            <p class="chord">C</p>
+            <p class="notes">E  -  E</p>
+            <p class="lyrics">Holy</p>
+        </td>
+        <td id="cell17">
+            <p class="chord">C</p>
+            <p class="notes">G  -F#  E</p>
+            <p class="lyrics">Infant so</p>
+        </td>
+        <td id="cell18">
+            <p class="chord">G</p>
+            <p class="notes">D  -E  D</p>
+            <p class="lyrics">tender and</p>
+        </td>
+        <td id="cell19">
+            <p class="chord">G</p>
+            <p class="notes">B  -  -</p>
+            <p class="lyrics">mild</p>
+        </td>
+    </tr>
+    <tr>
+        <td id="cell20">
+            <p class="chord">D</p>
+            <p class="notes">A  -  -A</p>
+            <p class="lyrics">Sleep in</p>
+        </td>
+        <td id="cell21">
+            <p class="chord">D7</p>
+            <p class="notes">&#266;  -A  F#</p>
+            <p class="lyrics">heav'nly</p>
+        </td>
+        <td id="cell22">
+            <p class="chord">G</p>
+            <p class="notes">G  -  -</p>
+            <p class="lyrics">Pea--</p>
+        </td>
+        <td id="cell23">
+            <p class="chord">Em</p>
+            <p class="notes">B  -  -</p>
+            <p class="lyrics">--ce</p>
+        </td>
+    </tr>
+    <tr>
+        <td id="cell24">
+            <p class="chord">G</p>
+            <p class="notes">G  D  B&#x0323;</p>
+            <p class="lyrics">Sleep in</p>
+        </td>
+        <td id="cell25">
+            <p class="chord">D</p>
+            <p class="notes">D  -B&#x0323;  A&#x0323;</p>
+            <p class="lyrics">heav'nly</p>
+        </td>
+        <td id="cell26">
+            <p class="chord">G</p>
+            <p class="notes">G&#x0323;  -  -</p>
+            <p class="lyrics">Pea--</p>
+        </td>
+        <td id="cell27">
+            <p class="chord">G</p>
+            <p class="notes">-  -  -</p>
+            <p class="lyrics">--ce</p>
+        </td>
+    </tr>
+  </table>
+
+  <script>
+    // Hardcoded chords for the row
+    const chords = ["G", "D", "C", "G"];
+    const row = document.getElementById("row");
+    const playBtn = document.getElementById("playBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const tempoSelect = document.getElementById("tempo");
+
+    let interval, beatNumber = 0, currentBar = 0, currentBeat = 0;
+    const numberOfBars = 28;
+    const timeSignature = 3; // 3/4 time
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playClick() {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = 880;
+      gain.gain.value = 0.2;
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    function startPlayback() {
+      stopPlayback();
+      const bpm = parseInt(tempoSelect.value);
+      beatDuration = (60 / bpm) * 1000; // duration of one beat in ms
+      const barDuration = beatDuration * timeSignature;
+      currentBeat = 0;
+
+      interval = setInterval(() => {
+        const activeCell = document.getElementById(`cell${currentBar}`);
+        if (activeCell) {
+            if (beatNumber === 0) {
+                document.querySelectorAll("td").forEach(el => el.classList.remove("active3"));
+                activeCell.classList.add("active");
+            } else if (beatNumber === 1) {
+                document.querySelectorAll("td").forEach(el => el.classList.remove("active"));
+                activeCell.classList.add("active2");
+            } else if (beatNumber === 2) {
+                document.querySelectorAll("td").forEach(el => el.classList.remove("active2"));
+                activeCell.classList.add("active3");
+            }
+        }
+
+        playClick(); // strong click on first chord
+        currentBeat = (currentBeat + 1) % (numberOfBars * timeSignature);
+        beatNumber = currentBeat % timeSignature;
+        currentBar = Math.floor(currentBeat / timeSignature);
+      }, beatDuration);
+    }
+
+    function stopPlayback() {
+      clearInterval(interval);
+      beatNumber = 0;
+      currentBar = 0;
+      currentBeat = 0;
+      document.querySelectorAll("td").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll("td").forEach(el => el.classList.remove("active2"));
+      document.querySelectorAll("td").forEach(el => el.classList.remove("active3"));
+    }
+
+    playBtn.addEventListener("click", () => {
+      audioCtx.resume();
+      startPlayback();
+    });
+    stopBtn.addEventListener("click", stopPlayback);
+
+  </script>
+</body>
+</html>
