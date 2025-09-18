@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chord Scale Excercise</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4a90e2 100%);
+      min-height: 100vh;
+      color: white;
+    }
+    
+    h1 {
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      font-weight: 300;
+    }
+    
+    label {
+      color: #e8f4fd;
+      font-weight: 500;
+      margin: 0 10px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    select {
+      background: linear-gradient(145deg, #ffffff, #f0f8ff);
+      border: 2px solid #4a90e2;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin: 0 10px;
+      font-size: 14px;
+      color: #2a5298;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    select:hover {
+      border-color: #2a5298;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transform: translateY(-1px);
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: #1e3c72;
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+    }
+    
+    button {
+      background: linear-gradient(145deg, #4a90e2, #2a5298);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    button:hover {
+      background: linear-gradient(145deg, #2a5298, #1e3c72);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3);
+    }
+    
+    table {
+      border-collapse: separate;
+      border-spacing: 8px;
+      margin: 30px auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+    } 
+    
+    td { 
+      border: 3px solid #4a90e2;
+      border-radius: 12px;
+      width: 180px; 
+      height: 30px; 
+      vertical-align: middle;
+      background: linear-gradient(145deg, #ffffff, #f8fbff);
+      box-shadow: inset 0 2px 4px rgba(74, 144, 226, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    td:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.2);
+    }
+    
+    .beat {
+      display: inline-block;
+      width: 30px;
+      height: 20px;
+      margin: 5px auto;
+      border: 2px solid #4a90e2;
+      border-radius: 8px;
+      line-height: 20px;
+      text-align: center;
+      font-weight: bold;
+      background: linear-gradient(145deg, #ffffff, #f0f8ff);
+      color: #2a5298;
+      font-size: 12px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(74, 144, 226, 0.1);
+    }
+    
+    .beat:hover {
+      transform: scale(1.05);
+      box-shadow: 0 3px 6px rgba(74, 144, 226, 0.2);
+    }
+    
+    .active1 {
+      background: linear-gradient(145deg, #87ceeb, #4a90e2);
+      color: white;
+      animation: pulse1 0.5s ease-in-out;
+      box-shadow: 0 0 15px rgba(135, 206, 235, 0.6);
+    }
+    
+    .active2 {
+      background: linear-gradient(145deg, #4a90e2, #2a5298);
+      color: white;
+      animation: pulse2 0.5s ease-in-out;
+      box-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+    }
+    
+    .emoji {
+      font-size: 2em;
+      line-height: 1;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+    }
+    @keyframes pulse1 {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes pulse2 {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Back button styling */
+    button[onclick] {
+      background: linear-gradient(145deg, #6c757d, #495057);
+      font-size: 14px;
+      padding: 10px 20px;
+      margin-top: 30px;
+    }
+    
+    button[onclick]:hover {
+      background: linear-gradient(145deg, #495057, #343a40);
+    }
+    /* Scale section */
+    .scale-section {
+      margin: 20px auto 10px;
+      max-width: 900px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+      border: 3px solid #4a90e2;
+      width: 20%;
+      max-height: 600px;
+      display: inline-block;
+      vertical-align: top;
+      margin-left: 10px;
+      margin-right: 10px;
+      flex: 0 0 45%;
+      height: 400px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    .scale-row {
+      display: flex;
+      gap: 20px;
+      width: 600px;
+      justify-content: center;
+      flex-wrap: nowrap;
+      align-items: center;
+      margin: 0 auto; /* center the row on the page */
+    }
+    .scale-section h2 {
+      margin: 0 0 12px 0;
+      color: #1e3c72;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .scale-image {
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 260px;
+      object-fit: contain; /* no cropping */
+      display: block;
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.2);
+      border: 2px solid #4a90e2;
+      background: #fff;
+    }
+    /* Keep them on the same line on small screens too */
+  </style>
+</head>
+<body>
+  <div class="ad-container" style="margin: 10px auto 20px; max-width: 970px;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="0000000000"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  <h1>Chord/ Scale Exercise - Sequence</h1>
+
+  <label>Tempo (BPM):</label>
+  <select id="tempo">
+    <option value="60">60</option>
+    <option value="80">80</option>
+    <option value="100" selected>100</option>
+    <option value="120">120</option>
+    <option value="140">140</option>
+  </select>
+
+  <label>Time Signature:</label>
+  <select id="timeSignature">
+    <option value="2">2/4</option>
+    <option value="3">3/4</option>
+    <option value="4" selected>4/4</option>
+  </select>
+  <div class="scale-row">
+    <div class="scale-section">
+      <h2>Guitar scale</h2>
+      <img class="scale-image" src="images/c_major_scale.png" alt="C major guitar scale diagram">
+    </div>
+    <div class="scale-section">
+      <h2>Violin scale</h2>
+      <img class="scale-image" src="images/violin_fretboard_vertical.png" alt="C major guitar scale diagram">
+    </div>
+  </div>
+
+  <button id="playBtn">▶ Play</button>
+  <button id="stopBtn">⏹ Stop</button>
+
+
+  <table>
+    <tbody id="gridBody"></tbody>
+  </table>
+  
+  <button onclick="location.href='index.html'">← Back to Music Collection</button>
+  <script>
+    const gridBody = document.getElementById("gridBody");
+    const playBtn = document.getElementById("playBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const tempoSelect = document.getElementById("tempo");
+    const timeSignatureSelect = document.getElementById("timeSignature");
+
+    let interval, currentBeat = 0;
+    let sequences = [];
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function buildSequences() {
+      const sig = parseInt(timeSignatureSelect.value);
+      const windowSize = sig;
+      // Build linear sequence starting from F over 2 octaves minus one: 15 notes
+      const base = ["C","D","E","F","G","A","B"]; // natural notes
+      const order = [];
+      const startIndex = base.indexOf("F");
+      let idx = startIndex;
+      while (order.length < 15) {
+        order.push(base[idx]);
+        idx = (idx + 1) % base.length;
+      }
+      // Apply diacritics: first four (F,G,A,B) dot below; last four (C,D,E, F) dot above
+      const linear = order.map((n, i) => {
+        if (i <= 3) return n + "\u0323";      // dot below
+        if (i >= 11) return n + "\u0307";     // dot above
+        return n;
+      });
+
+      const result = [];
+      for (let i = 0; i <= linear.length - windowSize; i++) {
+        result.push(linear.slice(i, i + windowSize));
+      }
+      return result;
+    }
+
+    function renderGrid() {
+      sequences = buildSequences();
+      gridBody.innerHTML = "";
+      for (let i = 0; i < sequences.length; i++) {
+        if (i % 4 === 0) {
+          const tr = document.createElement("tr");
+          tr.id = `row-${Math.floor(i/4)}`;
+          gridBody.appendChild(tr);
+        }
+        const tr = gridBody.lastElementChild;
+        const td = document.createElement("td");
+        const seqDiv = document.createElement("div");
+        seqDiv.className = "sequence";
+        seqDiv.id = `seq-${i}`;
+        // Add each note in its own div
+        sequences[i].forEach((note, noteIndex) => {
+          const noteDiv = document.createElement("div");
+          noteDiv.className = "beat";
+          noteDiv.textContent = note;
+          noteDiv.id = `seq-${i}-note-${noteIndex}`;
+          seqDiv.appendChild(noteDiv);
+        });
+        td.appendChild(seqDiv);
+        tr.appendChild(td);
+      }
+      const remainder = sequences.length % 4;
+      if (remainder !== 0) {
+        for (let i = 0; i < 4 - remainder; i++) {
+          const td = document.createElement("td");
+          td.innerHTML = "&nbsp;";
+          gridBody.lastElementChild.appendChild(td);
+        }
+      }
+    }
+
+    function playClick(isStrong) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = isStrong ? 880 : 440;
+      gain.gain.value = 0.2;
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    function startPlayback() {
+      stopPlayback();
+      const bpm = parseInt(tempoSelect.value);
+      const beatDuration = (60 / bpm) * 1000;
+      const sig = parseInt(timeSignatureSelect.value);
+      const totalBeats = sequences.length * sig; // each sequence has 'sig' notes
+      currentBeat = 0;
+
+      interval = setInterval(() => {
+        // Clear previous highlights
+        document.querySelectorAll(".beat").forEach(el => el.classList.remove("active1"));
+
+        // Determine which sequence and which note within that sequence is active
+        const sigLocal = parseInt(timeSignatureSelect.value);
+        const seqIndex = Math.floor(currentBeat / sigLocal);
+        const noteIndex = currentBeat % sigLocal;
+        const noteDiv = document.getElementById(`seq-${seqIndex}-note-${noteIndex}`);
+        if (noteDiv) noteDiv.classList.add("active1");
+
+        // Strong click on the first note of each sequence
+        playClick(noteIndex === 0);
+
+        currentBeat = (currentBeat + 1) % totalBeats;
+      }, beatDuration);
+    }
+
+    function stopPlayback() {
+      clearInterval(interval);
+      document.querySelectorAll(".beat").forEach(el => el.classList.remove("active1"));
+      document.querySelectorAll(".beat").forEach(el => el.classList.remove("active2"));
+      currentBeat = 0;
+    }
+
+    timeSignatureSelect.addEventListener("change", () => {
+      renderGrid();
+    });
+    playBtn.addEventListener("click", () => {
+      audioCtx.resume();
+      startPlayback();
+    });
+    stopBtn.addEventListener("click", stopPlayback);
+
+    renderGrid();
+  </script>
+</body>
+</html>
