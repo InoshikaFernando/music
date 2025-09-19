@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Chord Scale Excercise</title>
+  <title>Scale Excercise for guitar and violin - Single Scale</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -239,7 +239,7 @@
       (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
   </div>
-  <h1>Chord/ Scale Exercise - Sequence</h1>
+  <h1>Scale Exercise - Single scale</h1>
 
   <label>Tempo (BPM):</label>
   <select id="tempo">
@@ -259,11 +259,11 @@
   <div class="scale-row">
     <div class="scale-section">
       <h2>Guitar scale</h2>
-      <img class="scale-image" src="images/c_major_scale.png" alt="C major guitar scale diagram">
+      <img class="scale-image" src="images/c_major_single_scale.png" alt="C major guitar scale diagram">
     </div>
     <div class="scale-section">
       <h2>Violin scale</h2>
-      <img class="scale-image" src="images/violin_fretboard_vertical.png" alt="C major guitar scale diagram">
+      <img class="scale-image" src="images/violin_fretboard_single-scale.png" alt="C major guitar scale diagram">
     </div>
   </div>
 
@@ -290,26 +290,22 @@
     function buildSequences() {
       const sig = parseInt(timeSignatureSelect.value);
       const windowSize = sig;
-      // Build linear sequence starting from F over 2 octaves minus one: 15 notes
-      const base = ["C","D","E","F","G","A","B"]; // natural notes
-      const order = [];
-      const startIndex = base.indexOf("F");
-      let idx = startIndex;
-      while (order.length < 15) {
-        order.push(base[idx]);
-        idx = (idx + 1) % base.length;
-      }
-      // Apply diacritics: first four (F,G,A,B) dot below; last four (C,D,E, F) dot above
-      const linear = order.map((n, i) => {
-        if (i <= 3) return n + "\u0323";      // dot below
-        if (i >= 11) return n + "\u0307";     // dot above
-        return n;
-      });
+      // Ascending from C up to high C (dot above)
+      const linear = ["C","D","E","F","G","A","B","C\u0307"]; // C .. high C
 
       const result = [];
+
+      // Standard sliding windows over ascending line
       for (let i = 0; i <= linear.length - windowSize; i++) {
         result.push(linear.slice(i, i + windowSize));
       }
+
+      // Append descending windows from Ċ back to C for any window size (2,3,4)
+      const descLine = ["C\u0307","B","A","G","F","E","D","C"];
+      for (let i = 0; i <= descLine.length - windowSize; i++) {
+        result.push(descLine.slice(i, i + windowSize));
+      }
+
       return result;
     }
 
@@ -348,15 +344,39 @@
       }
     }
 
-    function playClick(isStrong) {
+    // Convert note label (e.g., "F̤" with dot below U+0323, or "Ḟ" with dot above U+0307) to frequency and play it
+    function playNote(noteLabel) {
+      if (!noteLabel) return;
+      const DOT_BELOW = "\u0323"; // lower register
+      const DOT_ABOVE = "\u0307"; // higher register
+      const hasDotBelow = noteLabel.includes(DOT_BELOW);
+      const hasDotAbove = noteLabel.includes(DOT_ABOVE);
+      const baseNote = noteLabel.replace(DOT_BELOW, "").replace(DOT_ABOVE, "");
+
+      // Map natural notes to semitone distance from A within the same octave
+      const SEMI_FROM_A = { C: -9, D: -7, E: -5, F: -4, G: -2, A: 0, B: 2 };
+      const baseSemis = SEMI_FROM_A[baseNote];
+      if (baseSemis === undefined) return;
+
+      // Use octave 4 as default (C4..B4). Apply -1 for dot below, +1 for dot above
+      let octave = 4;
+      if (hasDotBelow) octave -= 1;
+      if (hasDotAbove) octave += 1;
+
+      const semitoneDistanceFromA4 = baseSemis + (octave - 4) * 12;
+      const freq = 440 * Math.pow(2, semitoneDistanceFromA4 / 12);
+
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.connect(gain);
       gain.connect(audioCtx.destination);
-      osc.frequency.value = isStrong ? 880 : 440;
-      gain.gain.value = 0.2;
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.4, audioCtx.currentTime + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.22);
       osc.start();
-      osc.stop(audioCtx.currentTime + 0.1);
+      osc.stop(audioCtx.currentTime + 0.2);
     }
 
     function startPlayback() {
@@ -378,8 +398,9 @@
         const noteDiv = document.getElementById(`seq-${seqIndex}-note-${noteIndex}`);
         if (noteDiv) noteDiv.classList.add("active1");
 
-        // Strong click on the first note of each sequence
-        playClick(noteIndex === 0);
+        // Play the actual musical note for this cell
+        const currentNote = sequences[seqIndex] && sequences[seqIndex][noteIndex];
+        playNote(currentNote);
 
         currentBeat = (currentBeat + 1) % totalBeats;
       }, beatDuration);
